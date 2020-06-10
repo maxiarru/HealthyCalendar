@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         user = (EditText) findViewById(R.id.txtUser);
         pass = (EditText) findViewById(R.id.txtPass);
-        //password.setTransformationMethod(new PasswordTransformationMethod());
         botonLogin = (Button) findViewById(R.id.btnLogin);
      //   URL url = new URL("")
 

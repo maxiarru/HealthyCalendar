@@ -17,6 +17,9 @@ public interface ApiService {
     @GET("/v1/specialties")
     Call<List<Especialidad>> getEspecialidades();
 
+    @GET("/v1/professionals/{id}/specialties")
+    Call<List<Especialidad>> getEspecialidadesByProfesional(@Path("id") Integer idProfesional);
+
     @GET("/v1/patients/{id}")
     Call<Paciente> getPacienteById(@Path("id") Integer idPaciente);
 
