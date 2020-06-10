@@ -2,6 +2,7 @@ package com.example.misturnos;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Layout;
@@ -11,24 +12,32 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.example.misturnos.client.api.ApiService;
+import com.example.misturnos.client.api.RetrofitClientInstance;
 
+import com.example.misturnos.models.Paciente;
+import com.example.misturnos.models.Profesional;
+import com.example.misturnos.models.Turno;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class misTurnosPaciente extends AppCompatActivity {
-public TextView  textoEstado, textoEspecialidad, textoHorario, textoTurno, textoFecha;
+
     ImageButton botonAtras, botonOk;
-    private String estado, especialidad, horario, nroTurno , fecha;
+
     private CheckBox cancelar, confirmar;
     ListView listView;
-    private List<String> misturnos, misestados;
+    private List<Turno> misturnos;
+    Context ctx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,67 +61,61 @@ public TextView  textoEstado, textoEspecialidad, textoHorario, textoTurno, texto
                 startActivity(ok);
             }
         });
-        //cuadroDatos turno1 = new cuadroDatos("1234","disponible","carlos roter","11:00/11:30","17/06/2020");
-        //cuadroDatos turno2 = new cuadroDatos("6254","disponible","juan pinelo","14:00/14:30","19/06/2020");
 
         // datos a mostrar
+
+        Bundle bundle = this.getIntent().getExtras();
+        Integer userId = bundle.getInt("USER_ID");
+        System.out.println("tengo id? " + userId);
+        ctx  = this;
         listView = (ListView) findViewById(R.id.listaturnos) ;
-        misturnos = new ArrayList<String>();
-        misturnos.add("123");
-        misturnos.add("3213");
-        misturnos.add("4213");
-        misturnos.add("33322");
-        misturnos.add("122112");
-        misestados = new ArrayList<String>();
-        misestados.add("disponible");
-        misestados.add("disponible");
-        misestados.add("cancelado");
-        misestados.add("disponible");
-        misestados.add("cancelado");
+        misturnos = llenarTurnos(userId);
+        System.out.println("pre adapter " + userId);
+     //   MyAdapter myAdapter = new MyAdapter(ctx, R.layout.cuadroinfo, (ArrayList<Turno>) misturnos);
+     //   listView.setAdapter(myAdapter);
 
-        //forma visual en que mostraremos los datos
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, misturnos);
-        // enlazamos el adaptador con nuestro list view
-        //listView.setAdapter(adapter);
-        // System.out.println((ArrayList<String>)misestados );
-        //for (int i = 0 ; i <= misestados.size()){
-        // if (misestados.toString().equals("disponible")){
-        MyAdapter myAdapter = new MyAdapter(this, R.layout.cuadroinfo, (ArrayList<String>) misturnos, (ArrayList<String>) misestados);
-        listView.setAdapter(myAdapter);
-
-        //}
-
-
-     /*   nroTurno = "1234";
-        estado = "disponible";
-        especialidad = "tocaVulto";
-        horario = "8:30 / 9:00 hs";
-        this.crearCuadroTurno("1234","disponible","catadordecarne","10:00 a 10:30");
-        this.crearCuadroTurno("1235","disponible","catadordeempanada","10:30 a 11:00");
-*/
 
     }
-  /*  public void crearCuadroTurno(String turn,String est, String esp, String time){
-        nroTurno = turn;
-        estado = est;
-        especialidad = esp;
-        horario = time;
-        LinearLayout micuadro = new LinearLayout(this);
-        micuadro = (LinearLayout) findViewById(R.id.cuadroTurnoPaciente);
-        textoEstado = (TextView)findViewById(R.id.txtestado);
-        textoEstado.setText(estado);
-        textoEspecialidad = (TextView)findViewById(R.id.txtespecialiad);
-        textoEspecialidad.setText(especialidad);
-        textoTurno = (TextView)findViewById(R.id.txtnroTurno);
-        textoTurno.setText(nroTurno);
-        textoHorario = (TextView)findViewById(R.id.txtHorario);
-        textoHorario.setText(horario);
 
-        if (estado == "disponible"){
-            System.out.println("pasa por aca " + estado + "-/-" + textoEstado.getText().toString() + "/" + nroTurno );
-            micuadro.setVisibility(View.VISIBLE);
-        }
+    private List<Turno> llenarTurnos(Integer userId){
+        ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
+        Call<List<Turno>> call = service.getTurnos(userId);
+        final List<Turno> turnosF = new ArrayList<Turno>();
+        call.enqueue(new Callback<List<Turno>>() {
+            @Override
+            public void onResponse(Call<List<Turno>> call, Response<List<Turno>> response) {
+                if (response.code() == 200) {
+                    System.out.println("getted turnos ok");
+                    List<Turno> turnos = response.body();
+                    // profesiones.add(0, "Especialidades:");
+                    //turnosF.add(new LosTurnos());
+                    for (Turno t : turnos){
+                        int nroturno            = t.getId();
+                        Date date               = t.getDate();
+                        String status           = t.getStatus();
+                        Paciente paciente       = t.getPaciente();
+                        Profesional profesional = t.getProfesional();
+                        System.out.println("datos " + nroturno + " / "+ status);
+                        turnosF.add(new Turno(nroturno, date, status,paciente,profesional));
+
+                    }
+                    System.out.println(turnosF);
+                    MyAdapter myAdapter = new MyAdapter(ctx, R.layout.cuadroinfo, (ArrayList<Turno>) turnosF);
+                    listView.setAdapter(myAdapter);
+                    System.out.println("terminando list view" );
+
+                } else if (response.code() == 500) {
+                    System.out.println("ERROR: code 500 - get specialties failed");
+                    Toast.makeText(misTurnosPaciente.this, "get turnos failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Turno>> call, Throwable t) {
+                System.out.printf("ERROR: %s", t.getMessage());
+                Toast.makeText(misTurnosPaciente.this, "get turnos failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return turnosF;
     }
-
-   */
 }

@@ -2,6 +2,7 @@ package com.example.misturnos.client.api;
 import com.example.misturnos.models.Credenciales;
 import com.example.misturnos.models.Especialidad;
 import com.example.misturnos.models.Paciente;
+import com.example.misturnos.models.Turno;
 import com.example.misturnos.models.Usuario;
 
 import java.util.List;
@@ -25,4 +26,7 @@ public interface ApiService {
 
     @GET("/v1/professionals/{id}")
     Call<Paciente> getProfesionalById(@Path("id") Integer idProfesional);
+
+    @GET("/v1/patients/{id}/appointments")
+    Call<List<Turno>> getTurnos(@Path("id") Integer idPaciente);
 }

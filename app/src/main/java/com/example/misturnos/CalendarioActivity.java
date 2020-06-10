@@ -33,6 +33,9 @@ public class CalendarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendario);
+        Bundle bundle = this.getIntent().getExtras();
+        Integer userId = bundle.getInt("USER_ID");
+
         spinner = findViewById(R.id.spinnerProfesion);
         List<String> profesiones = llenarEspecialidades();
         ArrayAdapter<String> dataAdapter;
@@ -69,6 +72,7 @@ public class CalendarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent turnos = new Intent(CalendarioActivity.this, misTurnosPaciente.class);
+                turnos.putExtra("USER_ID", userId);
                 startActivity(turnos);
             }
         });
@@ -78,6 +82,7 @@ public class CalendarioActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Intent agendar = new Intent(CalendarioActivity.this, agendarTurnoActivity.class);
+
                 startActivity(agendar);
             }
         });

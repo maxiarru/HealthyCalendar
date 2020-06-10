@@ -43,6 +43,7 @@
                     ></TextView>
 
                 <TextView
+                    android:text=""
                     android:id="@+id/txtnroTurno"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"></TextView>
@@ -53,6 +54,7 @@
                     android:text="/ Estado : "></TextView>
 
                 <TextView
+                    android:text=""
                     android:id="@+id/txtestado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"></TextView>
@@ -63,7 +65,8 @@
                     android:text="/ "></TextView>
 
                 <TextView
-                    android:id="@+id/txtespecialiad"
+                    android:text=""
+                    android:id="@+id/txtprofesional"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"></TextView>
             </LinearLayout>
@@ -83,8 +86,8 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="8:00/8:30 hs"
                     android:id="@+id/txtHorario"
+                    android:text=""
                     ></TextView>
 
                 <CheckBox
@@ -106,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="07/04/2020"
-                    android:id="@+id/tctFecha"></TextView>
+                    android:id="@+id/txtFecha"></TextView>
 
                 <CheckBox
                     android:id="@+id/cbCancelar"
