@@ -35,9 +35,9 @@
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:hint="Usser"
+        android:hint="User"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/txtUsser"
+        android:id="@+id/txtUser"
         />
     <EditText
         android:layout_width="200dp"
@@ -45,7 +45,8 @@
         android:hint="Pass"
         android:layout_gravity="center_horizontal"
         android:id="@+id/txtPass"
-        />
+        android:inputType="textPassword"
+    />
 
     <CheckBox
         android:layout_width="wrap_content"
