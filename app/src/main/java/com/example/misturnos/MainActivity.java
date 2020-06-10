@@ -51,12 +51,14 @@ public class MainActivity extends AppCompatActivity {
                             if (response.code() == 200) {
                                 Usuario user = response.body();
                                 if (user.isMedico()) {
-                                    Intent aux1 = new Intent(MainActivity.this, CalendarioMedicoActivity.class);
-                                    startActivity(aux1);
+                                    Intent medicoAct = new Intent(MainActivity.this, CalendarioMedicoActivity.class);
+                                    medicoAct.putExtra("USER_ID", user.getId());
+                                    startActivity(medicoAct);
                                 }
                                 else {
-                                    Intent aux = new Intent(MainActivity.this, CalendarioActivity.class);
-                                    startActivity(aux);
+                                    Intent pacienteAct = new Intent(MainActivity.this, CalendarioActivity.class);
+                                    pacienteAct.putExtra("USER_ID", user.getId());
+                                    startActivity(pacienteAct);
                                 }
                             } else if (response.code() == 500) {
                                 System.out.println("ERROR: authentication failed");
