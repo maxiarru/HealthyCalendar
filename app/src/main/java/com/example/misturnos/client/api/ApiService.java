@@ -36,8 +36,11 @@ public interface ApiService {
     Call<List<Turno>> getTurnos(@Path("id") Integer idPaciente);
 
     @PUT("/v1/patients/{id}/appointments/{idAppointment}/confirm")
-    Call<Turno> putConfirmarTurnos(@Path("id") Integer idPaciente, @Path("idAppointment") Integer idTurno);
+    Call<Void> putConfirmarTurnos(@Path("id") Integer idPaciente, @Path("idAppointment") Integer idTurno);
 
     @PUT("/v1/patients/{id}/appointments/{idAppointment}/cancel")
-    Call<Turno> putCancelarTurnos(@Path("id") Integer idPaciente, @Path("idAppointment") Integer idTurno);
+    Call<Void> putCancelarTurnos(@Path("id") Integer idPaciente, @Path("idAppointment") Integer idTurno);
+
+    @PUT("/v1/patients/{id}/appointments/{idAppointment}/request")
+    Call<Void> putAgendarTurno(@Path("id") Integer idPaciente, @Path("idAppointment") Integer idTurno);
 }

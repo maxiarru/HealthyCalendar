@@ -1,7 +1,9 @@
 package com.example.misturnos;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +13,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.misturnos.client.api.ApiService;
+import com.example.misturnos.client.api.RetrofitClientInstance;
 import com.example.misturnos.models.Turno;
 
 import java.time.LocalDate;
@@ -23,6 +28,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class AdapterMisTurnosPaciente extends BaseAdapter {
 
     private Context context;
@@ -30,6 +39,7 @@ public class AdapterMisTurnosPaciente extends BaseAdapter {
     private List<CheckBox> checkAceptar;
     private ArrayList<CheckBox> checkCancelar;
     private  List<Turno> turnos;
+    private Integer idPatient;
 
     public AdapterMisTurnosPaciente(Context context, int layout, ArrayList<Turno> turnos){
         this.context = context;
@@ -113,12 +123,62 @@ public class AdapterMisTurnosPaciente extends BaseAdapter {
             confirmar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
+                    System.out.println("request appointment");
+                    idPatient = ((Activity) context).getIntent().getExtras().getInt("USER_ID");
+                    Call<Void> call = service.putConfirmarTurnos(idPatient, turnoActual.getId());
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.code() == 200) {
+                                System.out.println("request appointment ok");
+                                Intent volver = new Intent(context, CalendarioActivity.class);
+                                volver.putExtra("USER_ID", idPatient);
+                                context.startActivity(volver);
+                            }
+                            else if (response.code() == 500) {
+                                System.out.println("ERROR: code 500 - request appointment failed");
+                                Toast.makeText(v.getContext(), "solo pueda confirmar un turno dentro de las previas 24hs", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            System.out.printf("ERROR: %s", t.getMessage());
+                            Toast.makeText(v.getContext(), "confirmar turno no disponible", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
 
             cancelar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
+                    System.out.println("request appointment");
+                    Integer idPatient = ((Activity) context).getIntent().getExtras().getInt("USER_ID");
+                    Call<Void> call = service.putCancelarTurnos(idPatient, turnoActual.getId());
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.code() == 200) {
+                                System.out.println("cancel appointment ok");
+                                Intent volver = new Intent(context, CalendarioActivity.class);
+                                volver.putExtra("USER_ID", idPatient);
+                                context.startActivity(volver);
+                            }
+                            else if (response.code() == 500) {
+                                System.out.println("ERROR: code 500 - request appointment failed");
+                                Toast.makeText(v.getContext(), "fallo cancelar turno", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            System.out.printf("ERROR: %s", t.getMessage());
+                            Toast.makeText(v.getContext(), "cancelar turno no disponible", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
 
