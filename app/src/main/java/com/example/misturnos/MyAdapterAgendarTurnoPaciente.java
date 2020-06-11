@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -20,15 +21,15 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyAdapteragendar extends BaseAdapter {
+public class MyAdapterAgendarTurnoPaciente extends BaseAdapter {
 
     private final List<Turno> turnos;
     private Context context;
     private int layout;
     // private ArrayList<cuadroDatos> turno;
-    private CheckBox agendar;
+    private Button agendar;
 
-    public MyAdapteragendar(Context context, int layout, List<Turno> turnos){
+    public MyAdapterAgendarTurnoPaciente(Context context, int layout, List<Turno> turnos){
         this.context = context;
         this.layout = layout;
         this.turnos = turnos;
@@ -88,16 +89,18 @@ public class MyAdapteragendar extends BaseAdapter {
 
             final TextView textProfesional = (TextView) v.findViewById(R.id.txtmedicoagendar);
             textProfesional.setText(turnoActual.getProfesional().getName());
-            agendar = (CheckBox) v.findViewById(R.id.cbAgendar);
-            agendar.setOnClickListener(new View.OnClickListener() {
+            agendar = (Button) v.findViewById(R.id.cbAgendar);
+            /*agendar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(((CompoundButton)v).isChecked()){
+                        System.out.println("MARCO EL TURNO");
+                        System.out.println("MARCO EL TURNO");
                         System.out.println("marco un turno / " + R.id.cbAgendar+ " / " + textProfesional);
 
                     }
                 }
-            });
+            });*/
 
             return v;
 

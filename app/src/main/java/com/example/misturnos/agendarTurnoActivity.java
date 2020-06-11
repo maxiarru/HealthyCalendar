@@ -2,27 +2,21 @@ package com.example.misturnos;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.misturnos.models.Turno;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class agendarTurnoActivity extends AppCompatActivity {
 
     Context contexto;
-    ImageButton botonAtras, botonOk;
+    ImageButton botonAtras;
     ListView listView;
     private List<String> misturnos, medicos;
 
@@ -45,19 +39,10 @@ public class agendarTurnoActivity extends AppCompatActivity {
                 startActivity(atras);
             }
         });
-        botonOk = (ImageButton) findViewById(R.id.btnOk);
-        botonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ok = new Intent(agendarTurnoActivity.this, CalendarioActivity.class);
-                ok.putExtra("USER_ID", userId);
-                startActivity(ok);
-            }
-        });
 
         listView = (ListView) findViewById(R.id.listaturnosagendar) ;
 
-        MyAdapteragendar myAdapter = new MyAdapteragendar(this, R.layout.cuadro_turno_paciente, turnos);
+        MyAdapterAgendarTurnoPaciente myAdapter = new MyAdapterAgendarTurnoPaciente(this, R.layout.cuadro_turno_paciente, turnos);
         listView.setAdapter(myAdapter);
 
     }

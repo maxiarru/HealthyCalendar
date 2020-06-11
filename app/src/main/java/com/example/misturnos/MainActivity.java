@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import android.widget.EditText;
+import android.widget.CheckBox;
 
 import java.net.HttpURLConnection;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     /* definir variables */
     EditText user, pass;
     Button botonLogin;
+    CheckBox recuerdame;
     private static HttpURLConnection httpConnection;
 
     @Override
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         user = (EditText) findViewById(R.id.txtUser);
         pass = (EditText) findViewById(R.id.txtPass);
+        recuerdame = (CheckBox) findViewById(R.id.cbRememberMe);
         botonLogin = (Button) findViewById(R.id.btnLogin);
      //   URL url = new URL("")
 

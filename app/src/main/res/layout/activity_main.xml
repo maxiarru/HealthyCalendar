@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:text="Remember Me "
         android:layout_marginLeft="100dp"
+        android:id="@+id/cbRememberMe"
         ></CheckBox>
 
     <TextView

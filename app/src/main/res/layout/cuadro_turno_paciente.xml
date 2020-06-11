@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context=".MyAdapteragendar"
+    tools:context=".MyAdapterAgendarTurnoPaciente"
     >
 
     <LinearLayout
@@ -84,13 +84,13 @@
                 android:id="@+id/txtHorario"
                 ></TextView>
 
-            <CheckBox
+            <Button
                 android:id="@+id/cbAgendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="80dp"
                 android:checked="false"
-                android:text="Agendar "></CheckBox>
+                android:text="Agendar "></Button>
 
         </LinearLayout>
     </LinearLayout>
