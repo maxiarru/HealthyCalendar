@@ -61,11 +61,10 @@ public class MyAdapter extends BaseAdapter {
             ) {
             System.out.println("en el get view del myadapter");
             int    turnoActual = turnos.get(position).getId();
-            long   hora        = turnos.get(position).getDate().getTime();
-            //long   fecha       = turnos.get(position).getDate().getDate();
+            Date   fecha       = turnos.get(position).getDate();
             String estado      = turnos.get(position).getStatus();
             String profesional = turnos.get(position).getProfesional().getName();
-            System.out.println("q pasa " + turnoActual + " / " + estado + " / " + profesional);
+            System.out.println(fecha + " / "+ turnoActual + " / " + estado + " / " + profesional);
             // referenciamos el elemento a modificar y lo rellenamos
             TextView textView = (TextView) v.findViewById(R.id.txtnroTurno);
             System.out.println("a1");
@@ -78,8 +77,8 @@ public class MyAdapter extends BaseAdapter {
             TextView textViewProfesional = (TextView) v.findViewById(R.id.txtprofesional);
             textViewProfesional.setText(profesional);
             System.out.println("c");
-            TextView textViewhorario = (TextView) v.findViewById(R.id.txtHorario);
-            textViewhorario.setText((int) hora);
+            TextView textViewhorario = (TextView) v.findViewById(R.id.txtFecha);
+            textViewhorario.setText(String.valueOf(fecha));
 
             confirmar = (CheckBox) v.findViewById(R.id.cbConfirmar);
             cancelar = (CheckBox) v.findViewById(R.id.cbCancelar);
@@ -89,6 +88,7 @@ public class MyAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     if(((CompoundButton)v).isChecked()){
                      cancelar.setChecked(false);
+                        textViewEstado.setText("confirmed");
                     }
                 }
             });
