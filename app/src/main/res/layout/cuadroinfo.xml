@@ -13,7 +13,7 @@
     <LinearLayout
         android:id="@+id/cuadroTurnoPaciente"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="105dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="15dp"
         android:alwaysDrawnWithCache="false"
@@ -33,90 +33,101 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5px">
+                android:layout_marginTop="5px"
+                android:layout_marginLeft="15dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="N° : "
-
+                    android:text="N° Turno: "
+                    android:textColor="@color/colorPrimary"
                     ></TextView>
 
                 <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:text=""
                     android:id="@+id/txtnroTurno"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"></TextView>
 
                 <TextView
+                    android:textColor="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="/ Estado : "></TextView>
 
                 <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:text=""
                     android:id="@+id/txtestado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"></TextView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="/ "></TextView>
-
-                <TextView
-                    android:id="@+id/txtespecialiad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></TextView>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="8:00/8:30 hs"
-                    android:id="@+id/txtHorario"
-                    ></TextView>
-
-                <CheckBox
-                    android:id="@+id/cbConfirmar"
+                    android:textColor="#000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="80dp"
-                    android:checked="false"
-                    android:text="Confirmar"></CheckBox>
+                    android:id="@+id/txtFecha"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="5px"
+                    android:layout_marginLeft="15dp"
+                    ></TextView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="2dp"
+                >
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="07/04/2020"
-                    android:id="@+id/tctFecha"></TextView>
+                    android:textColor="#000000"
+                    android:layout_marginLeft="15dp"
+                    android:text="Profesional: "
+                    android:id="@+id/txtproftexto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+            <TextView
+                android:textColor="#000000"
+                android:id="@+id/txtprofesional"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <CheckBox
+                    android:id="@+id/cbConfirmar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:checked="false"
+                    android:text="Confirmar"></CheckBox>
                 <CheckBox
                     android:id="@+id/cbCancelar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="80dp"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginRight="10dp"
                     android:checked="false"
                     android:text="Cancelar"
                     android:visibility="visible"></CheckBox>
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
