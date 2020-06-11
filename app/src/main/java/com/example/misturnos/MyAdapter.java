@@ -8,20 +8,22 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.misturnos.models.Turno;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MyAdapter extends BaseAdapter {
 
     private Context context;
     private int layout;
-   // private ArrayList<cuadroDatos> turno;
+    private List<CheckBox> checkAceptar;
+    private ArrayList<CheckBox> checkCancelar;
     private  ArrayList<Turno> turnos;
+
     private CheckBox cancelar, confirmar;
 
     public MyAdapter(Context context, int layout, ArrayList<Turno> turnos){
@@ -48,13 +50,12 @@ public class MyAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //copiamos la vista
-
         View v = convertView;
         //inflamos la vista que nos llega con nuestro layout personalizado
         LayoutInflater layoutInflater = LayoutInflater.from(this.context);
         v = layoutInflater.inflate(R.layout.cuadroinfo, null);
         // nos traemos el vlor actual dependiendo de la pos.i
-        System.out.println(turnos.get(position).getStatus() + " / " + turnos.get(position).getStatus().toString());
+
         if (turnos.get(position).getStatus().equals("pending")   ||
             turnos.get(position).getStatus().equals("confirmed") ||
             turnos.get(position).getStatus().equals("cancelled")
@@ -64,49 +65,59 @@ public class MyAdapter extends BaseAdapter {
             Date   fecha       = turnos.get(position).getDate();
             String estado      = turnos.get(position).getStatus();
             String profesional = turnos.get(position).getProfesional().getName();
-            System.out.println(fecha + " / "+ turnoActual + " / " + estado + " / " + profesional);
+            //confirmar = turnos.get(position).getCbConfirmar();
             // referenciamos el elemento a modificar y lo rellenamos
             TextView textView = (TextView) v.findViewById(R.id.txtnroTurno);
-            System.out.println("a1");
             //textView.setText(turnoActual);
             textView.setText(String.valueOf(turnoActual));
-            System.out.println("a");
+
             TextView textViewEstado = (TextView) v.findViewById(R.id.txtestado);
             textViewEstado.setText(estado);
-            System.out.println("b");
+
             TextView textViewProfesional = (TextView) v.findViewById(R.id.txtprofesional);
             textViewProfesional.setText(profesional);
-            System.out.println("c");
+
             TextView textViewhorario = (TextView) v.findViewById(R.id.txtFecha);
             textViewhorario.setText(String.valueOf(fecha));
 
+
             confirmar = (CheckBox) v.findViewById(R.id.cbConfirmar);
+            confirmar.setTag(position);
+            //confirmar.setTag(cbConfirmar.getTag(position));
+            //System.out.println(confirmar.isChecked() + " 111 llega aca?" + confirmar.getTag() );
+
             cancelar = (CheckBox) v.findViewById(R.id.cbCancelar);
-            System.out.println(confirmar.isChecked() + " llega aca?");
-            confirmar.setOnClickListener(new View.OnClickListener() {
+            cancelar.setTag(position);
+            System.out.println(cancelar.isChecked() + " llega aca?" + position);
+
+           confirmar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(((CompoundButton)v).isChecked()){
                      cancelar.setChecked(false);
                         textViewEstado.setText("confirmed");
+                        turnos.get(position).setStatus("confirmed");
+                    }
+                    else{
+                        textViewEstado.setText(estado);
                     }
                 }
             });
+
             cancelar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(((CompoundButton)v).isChecked()){
                         confirmar.setChecked(false);
+                        textViewEstado.setText("cancelled");
+                        turnos.get(position).setStatus("cancelled");
+                    }
+                    else{
+                        textViewEstado.setText(estado);
                     }
                 }
             });
 
-            if (confirmar.isChecked() == true){
-                cancelar.setChecked(false);
-            }
-            if (cancelar.isChecked()==true){
-                confirmar.setChecked(false);
-            }
         return v;
     }
         v.setVisibility(View.INVISIBLE);

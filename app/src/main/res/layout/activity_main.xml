@@ -51,6 +51,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/cbRememberMe"
         android:text="Remember Me "
         android:layout_marginLeft="100dp"
         ></CheckBox>

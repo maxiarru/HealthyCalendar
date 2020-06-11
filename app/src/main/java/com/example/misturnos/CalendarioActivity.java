@@ -18,6 +18,7 @@ import com.example.misturnos.client.api.RetrofitClientInstance;
 import com.example.misturnos.models.Especialidad;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +30,7 @@ public class CalendarioActivity extends AppCompatActivity {
     private Spinner spinner;
     private Button botonSalir, botonTurnos;
     CalendarView calendarioPaciente;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,7 @@ public class CalendarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent volver = new Intent(CalendarioActivity.this, MainActivity.class);
+                volver.putExtra("USER_ID", userId);
                 startActivity(volver);
             }
         });
