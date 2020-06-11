@@ -40,6 +40,7 @@ public class CalendarioMedicoActivity extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
         Integer userId = bundle.getInt("USER_ID");
         List<String> profesiones = llenarEspecialidades(userId);
+        profesiones.add(0,"Elegir Especialidad:");
         ArrayAdapter<String> dataAdapter;
         dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, profesiones);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -92,14 +93,13 @@ public class CalendarioMedicoActivity extends AppCompatActivity {
         ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
         System.out.println("getting specialties by profesional");
         Call<List<Especialidad>> call = service.getEspecialidadesByProfesional(userId);
-        final List<String> profesiones = new ArrayList<String>();
+        final List<String> profesiones = new ArrayList<>();
         call.enqueue(new Callback<List<Especialidad>>() {
             @Override
             public void onResponse(Call<List<Especialidad>> call, Response<List<Especialidad>> response) {
                 if (response.code() == 200) {
                     System.out.println("getted specialties ok");
                     List<Especialidad> especialidades = response.body();
-                    profesiones.add(0, "Especialidades:");
                     for (Especialidad e : especialidades){
                         String profesionEspecialidad = e.getCategory() + " - " + e.getSubCategory();
                         profesiones.add(profesionEspecialidad);

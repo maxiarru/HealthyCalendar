@@ -1,7 +1,9 @@
 package com.example.misturnos.models;
 import com.google.gson.annotations.SerializedName;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
     @SerializedName("id")
     private Integer id;
 

@@ -13,6 +13,9 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.example.misturnos.models.Turno;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +31,17 @@ public class agendarTurnoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agendar_turno);
+
+        Bundle bundle = this.getIntent().getExtras();
+        Integer userId = bundle.getInt("USER_ID");
+        List<Turno> turnos = (List<Turno>) bundle.getSerializable("TURNOS_DISPONIBLES");
+
         botonAtras = (ImageButton) findViewById(R.id.btnAtras);
         botonAtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent atras = new Intent(agendarTurnoActivity.this, CalendarioActivity.class);
+                atras.putExtra("USER_ID", userId);
                 startActivity(atras);
             }
         });
@@ -41,25 +50,14 @@ public class agendarTurnoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent ok = new Intent(agendarTurnoActivity.this, CalendarioActivity.class);
+                ok.putExtra("USER_ID", userId);
                 startActivity(ok);
             }
         });
 
         listView = (ListView) findViewById(R.id.listaturnosagendar) ;
-        misturnos = new ArrayList<String>();
-        misturnos.add("123");
-        misturnos.add("3213");
-        misturnos.add("4213");
-        misturnos.add("33322");
-        misturnos.add("122112");
-        medicos = new ArrayList<String>();
-        medicos.add("Carlos Sal");
-        medicos.add("Oscar Cito");
-        medicos.add("Carlos Sal");
-        medicos.add("Ricardo Loris");
-        medicos.add("Oscar Cito");
 
-        MyAdapteragendar myAdapter = new MyAdapteragendar(this, R.layout.cuadro_turno_paciente, (ArrayList<String>) misturnos, (ArrayList<String>) medicos);
+        MyAdapteragendar myAdapter = new MyAdapteragendar(this, R.layout.cuadro_turno_paciente, turnos);
         listView.setAdapter(myAdapter);
 
     }
