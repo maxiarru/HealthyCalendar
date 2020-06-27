@@ -27,8 +27,17 @@ public interface ApiService {
     @GET("/v1/professionals/{id}")
     Call<Paciente> getProfesionalById(@Path("id") Integer idProfesional);
 
+    @GET("/v1/professionals/{id}/appointments")
+    Call<List<Turno>> getTurnosMedico(@Path("id") Integer idProfesional);
+
+    @PUT("/v1/professionals/{id}/appointments/{idAppointment}/cancel")
+    Call<Void> putCancelarTurnoMedico(@Path("id") Integer idMedico, @Path("idAppointment") Integer idTurno);
+
+    @PUT("/v1/professionals/{id}/appointments/{idAppointment}/attend")
+    Call<Void> putAtenderTurnoMedico(@Path("id") Integer idMedico, @Path("idAppointment") Integer idTurno);
+
     @GET("/v1/appointments")
-    //Call<List<Turno>> getTurnosByEspecialidad(@Query("idspecialty") Integer idSpecialty, @Query("startDate") String startDate);
+        //Call<List<Turno>> getTurnosByEspecialidad(@Query("idspecialty") Integer idSpecialty, @Query("startDate") String startDate);
     Call<List<Turno>> getTurnosByEspecialidad(@Query("idspecialty") Integer idSpecialty);
 
 

@@ -24,7 +24,10 @@
         >
         <CalendarView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/calendarViewMedico"
+            android:clickable="true"
+            android:onClick="CalendarClickMedico">
         </CalendarView>
     </LinearLayout>
 
@@ -34,7 +37,7 @@
         android:gravity="center"
         android:layout_marginTop="10dp"     >
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/swmodoPaciente"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -51,7 +54,7 @@
             android:scaleX="2"
             android:scaleY="2"
             />
-      </LinearLayout>
+    </LinearLayout>
 
     <RadioGroup
         android:layout_width="410dp"

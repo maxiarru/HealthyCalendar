@@ -9,10 +9,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-
-        <activity android:name=".misTurnosPaciente"></activity>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ActivityMedicoAtender"></activity>
+        <activity android:name=".misTurnosMedico" />
+        <activity android:name=".misTurnosPaciente" />
         <activity android:name=".agendarTurnoActivity" />
         <activity android:name=".CalendarioMedicoActivity" />
         <activity android:name=".plusActivity" />
