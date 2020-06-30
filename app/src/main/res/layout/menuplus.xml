@@ -211,7 +211,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="#F1F9FF"
-                android:text="aceptar"
+                android:text="Atender"
                 android:textColor="#5282A8" />
         </LinearLayout>
 </LinearLayout>

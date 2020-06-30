@@ -28,6 +28,7 @@ import com.example.misturnos.models.Especialidad;
 import com.example.misturnos.models.Turno;
 import com.example.misturnos.utils.ComboList;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,12 +50,14 @@ public class plusActivity extends AppCompatActivity {
     static final int tipoDialogoH = 1;
     static final int tipodialogohorD = 2;
     static final int tipoDialogohorH = 3;
-
+    private Calendar calendario2, calendario;
     static DatePickerDialog.OnDateSetListener selectorFechaDesde, selectorFechaHasta;
     static TimePickerDialog.OnTimeSetListener selectorHoraDesde, selectorHoraHasta;
     private Spinner spinner;
+    private String especialidad;
     private Integer idEspecialidad;
     private List<Turno> turnos;
+    private DayOfWeek Mon, Tue, Wed, Thu, Fri, Sat;
 
     //    Dialog customDialog = null;
     @Override
@@ -76,6 +79,18 @@ public class plusActivity extends AppCompatActivity {
         ArrayAdapter<ComboList> dataAdapter = new ArrayAdapter<ComboList>(this, android.R.layout.simple_spinner_item, profesiones);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ComboList item = (ComboList) parent.getItemAtPosition(position);
+                especialidad = item.string;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         Button aceptar = (Button) findViewById(R.id.btnOkfiltro);
@@ -167,30 +182,34 @@ public class plusActivity extends AppCompatActivity {
             }
         });
 
-        campoHoraDesde = (EditText)findViewById(R.id.texhoraDesde);
-        Calendar calendarH = Calendar.getInstance();
-        horaD = calendarH.get(Calendar.HOUR_OF_DAY);
-        minD = calendarH.get(Calendar.MINUTE);
+        campoHoraDesde = (EditText) findViewById(R.id.texhoraDesde);
+        //  Calendar calendarH = Calendar.getInstance();
+        horaD = 8;
+        minD = 00;
         mostrarHoraDesde();
+
         campoHoraHasta = (EditText)findViewById(R.id.texhoraHasta);
-        Calendar calendarH2 = Calendar.getInstance();
-        horaH = calendarH2.get(Calendar.HOUR_OF_DAY);
-        minH = calendarH2.get(Calendar.MINUTE);
+        //   Calendar calendarH2 = Calendar.getInstance();
+        horaH = 18;
+        minH = 0;
         mostrarHoraHasta();
 
         campoFechaDesde = (EditText)findViewById(R.id.texDesde);
-        Calendar calendario = Calendar.getInstance();
+        calendario = Calendar.getInstance();
         añoD = calendario.get(Calendar.YEAR);
         mesD = calendario.get(Calendar.MONTH)+1;
         diaD = calendario.get(Calendar.DAY_OF_MONTH);
+        calendario.set(Calendar.HOUR_OF_DAY, 8);
+        calendario.set(Calendar.MINUTE, 0);
         mostrarFechaDesde();
 
-
         campoFechaHasta = (EditText)findViewById(R.id.texHasta);
-        Calendar calendario2 = Calendar.getInstance();
+        calendario2 = Calendar.getInstance();
         añoH = calendario2.get(Calendar.YEAR);
         mesH = calendario2.get(Calendar.MONTH)+1;
         diaH = calendario2.get(Calendar.DAY_OF_MONTH);
+        calendario2.set(Calendar.HOUR_OF_DAY, 18);
+        calendario2.set(Calendar.MINUTE, 0);
         mostrarFechaHasta();
 
         selectorHoraDesde = new TimePickerDialog.OnTimeSetListener() {
@@ -198,7 +217,11 @@ public class plusActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 horaD = hourOfDay;
                 minD  = minute;
+                calendario.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendario.set(Calendar.MINUTE, minute);
                 mostrarHoraDesde();
+                System.out.println("fecha desde con hora    /  " + calendario.getTime());
+
             }
         };
         selectorHoraHasta = new TimePickerDialog.OnTimeSetListener() {
@@ -206,9 +229,16 @@ public class plusActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 horaH = hourOfDay;
                 minH  = minute;
+                calendario2.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendario2.set(Calendar.MINUTE, minute);
                 mostrarHoraHasta();
+                System.out.println("fecha hasta con hora   /  " + calendario2.getTime());
+
+
+
             }
         };
+
         selectorFechaDesde = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -216,6 +246,8 @@ public class plusActivity extends AppCompatActivity {
                 mesD = month;
                 diaD = dayOfMonth;
                 mostrarFechaDesde();
+                calendario.set(añoD, mesD, diaD);
+                System.out.println("fecha desde    /  " + calendario.getTime());
             }
         };
         selectorFechaHasta = new DatePickerDialog.OnDateSetListener() {
@@ -225,6 +257,9 @@ public class plusActivity extends AppCompatActivity {
                 mesH = month;
                 diaH = dayOfMonth;
                 mostrarFechaHasta();
+                //calendarHasta
+                calendario2.set(añoH , mesH, diaH);
+                System.out.println("fecha hasta    /  " + calendario2.getTime());
             }
         };
 

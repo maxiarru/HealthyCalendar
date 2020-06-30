@@ -8,11 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -46,7 +48,7 @@ public class CalendarioMedicoActivity extends AppCompatActivity {
     private Switch modoPaciente;
     private Integer idEspecialidad;
     private List<Turno> turnos;
-    private String tipoUsuario = "medico";
+    private String tipoUsuario , elPass, elUsuario , recuerdame;
     CalendarView calendarioMedico;
     Date milocaldate;
     private Context ctx;
@@ -59,6 +61,9 @@ public class CalendarioMedicoActivity extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
         Integer userId = bundle.getInt("USER_ID");
         tipoUsuario = bundle.getString("tipo_USUARIO");
+        elPass      = bundle.getString("ELPASS");
+        elUsuario   = bundle.getString("ELUSUARIO");
+        recuerdame  = bundle.getString("RECUERDAME");
         ctx = this;
         modoPaciente = (Switch) findViewById(R.id.swmodoPaciente);
         if (tipoUsuario.toString().equals("paciente")){
@@ -80,10 +85,20 @@ public class CalendarioMedicoActivity extends AppCompatActivity {
 
         botonSalir = (Button) findViewById(R.id.btnSalir);
         botonSalir.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                Intent volver = new Intent(CalendarioMedicoActivity.this, MainActivity.class);
-                startActivity(volver);
+                if(recuerdame.equalsIgnoreCase("recordar")) {
+                    Intent volver = new Intent(CalendarioMedicoActivity.this, MainActivity.class);
+                    volver.putExtra("ELUSUARIO", elUsuario);
+                    volver.putExtra("ELPASS",elPass);
+                    volver.putExtra("RECUERDAME", recuerdame);
+                    startActivity(volver);
+                }else{
+                    Intent volver = new Intent(CalendarioMedicoActivity.this, MainActivity.class);
+                    volver.putExtra("RECUERDAME", recuerdame);
+                    startActivity(volver);
+                }
             }
         });
 
@@ -137,10 +152,8 @@ public class CalendarioMedicoActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent Misturnos = new Intent(CalendarioMedicoActivity.this, misTurnosMedico.class);
-
                     Misturnos.putExtra("tipo_USUARIO", tipoUsuario);
                     Misturnos.putExtra("USER_ID", userId);
-
                     startActivity(Misturnos);
                 }
             });

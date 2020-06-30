@@ -127,7 +127,7 @@ public class AdapterMisTurnosMedico extends BaseAdapter {
                             else if (response.code() == 500) {
                                 System.out.println("ERROR: code 500 - request appointment failed");
                                 Toast.makeText(v.getContext(), "fallo cancelar turno", Toast.LENGTH_SHORT).show();
-                            }
+                            }else{System.out.println("ni 200 ni 500 " + response.code() +" / "+ response.message()+" / " + response.body());}
                         }
 
                         @Override

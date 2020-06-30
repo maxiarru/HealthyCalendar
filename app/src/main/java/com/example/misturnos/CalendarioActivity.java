@@ -44,12 +44,16 @@ public class CalendarioActivity extends AppCompatActivity {
     private Integer idEspecialidad;
     private List<Turno> turnos;
     CalendarView calendarioPaciente;
+    private String elPass, elUsuario , recuerdame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendario);
         Bundle bundle = this.getIntent().getExtras();
         Integer userId = bundle.getInt("USER_ID");
+        elPass      = bundle.getString("ELPASS");
+        elUsuario   = bundle.getString("ELUSUARIO");
+        recuerdame  = bundle.getString("RECUERDAME");
 
         spinner = findViewById(R.id.spinnerProfesion);
         List<ComboList> profesiones = llenarEspecialidades();
@@ -88,8 +92,18 @@ public class CalendarioActivity extends AppCompatActivity {
         botonSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent volver = new Intent(CalendarioActivity.this, MainActivity.class);
-                startActivity(volver);
+
+                if(recuerdame.equalsIgnoreCase("recordar")) {
+                    Intent volver = new Intent(CalendarioActivity.this, MainActivity.class);
+                    volver.putExtra("ELUSUARIO", elUsuario);
+                    volver.putExtra("ELPASS",elPass);
+                    volver.putExtra("RECUERDAME", recuerdame);
+                    startActivity(volver);
+                }else{
+                    Intent volver = new Intent(CalendarioActivity.this, MainActivity.class);
+                    volver.putExtra("RECUERDAME", recuerdame);
+                    startActivity(volver);
+                }
             }
         });
         botonTurnos = (Button) findViewById(R.id.btnMisTurnos);

@@ -34,6 +34,7 @@ import com.example.misturnos.utils.ComboList;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -56,6 +57,8 @@ public class misTurnosMedico extends AppCompatActivity {
     static TimePickerDialog.OnTimeSetListener selectorHoraDesde, selectorHoraHasta;
     private Spinner spinner;
     ListView listView;
+    private Calendar calendario2, calendario;
+    private String especialidad;
 
 
     //    Dialog customDialog = null;
@@ -105,12 +108,28 @@ public class misTurnosMedico extends AppCompatActivity {
                 ArrayAdapter<ComboList> dataAdapter = new ArrayAdapter<ComboList>(customDialog.getContext(), android.R.layout.simple_spinner_item, profesiones);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(dataAdapter);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        ComboList item = (ComboList) parent.getItemAtPosition(position);
+                        especialidad = item.string;
+                        System.out.println("q tengo ?  " + item.string + item.toString());
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
                 Button aceptar = (Button) customDialog.findViewById(R.id.btnOkfiltro);
                 Button cancelar = (Button) customDialog.findViewById(R.id.btnXfiltro);
 
                 aceptar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        filtrarTurnosMedico(userId , calendario.getTime(), calendario2.getTime(), especialidad);
+
                         customDialog.dismiss();
                     }
                 });
@@ -122,45 +141,46 @@ public class misTurnosMedico extends AppCompatActivity {
                     }
                 });
 
-                System.out.println("esta pasando por aca-------------------->1");
-
                 campoHoraDesde = (EditText)customDialog.findViewById(R.id.texhoraDesde);
-                Calendar calendarH = Calendar.getInstance();
-                horaD = calendarH.get(Calendar.HOUR_OF_DAY) -3;
-                minD = calendarH.get(Calendar.MINUTE);
+              //  Calendar calendarH = Calendar.getInstance();
+                horaD = 8;
+                minD = 00;
                 mostrarHoraDesde();
 
-                System.out.println("esta pasando por aca-------------------->aa");
-
                 campoHoraHasta = (EditText)customDialog.findViewById(R.id.texhoraHasta);
-                Calendar calendarH2 = Calendar.getInstance();
-                horaH = calendarH2.get(Calendar.HOUR_OF_DAY) -3;
-                minH = calendarH2.get(Calendar.MINUTE);
+             //   Calendar calendarH2 = Calendar.getInstance();
+                horaH = 18;
+                minH = 0;
                 mostrarHoraHasta();
 
-
-                System.out.println("esta pasando por aca-------------------->bb");
                 campoFechaDesde = (EditText)customDialog.findViewById(R.id.texDesde);
-                Calendar calendario = Calendar.getInstance();
+                calendario = Calendar.getInstance();
                 añoD = calendario.get(Calendar.YEAR);
                 mesD = calendario.get(Calendar.MONTH)+1;
                 diaD = calendario.get(Calendar.DAY_OF_MONTH);
+                calendario.set(Calendar.HOUR_OF_DAY, 8);
+                calendario.set(Calendar.MINUTE, 0);
                 mostrarFechaDesde();
 
                 campoFechaHasta = (EditText)customDialog.findViewById(R.id.texHasta);
-                Calendar calendario2 = Calendar.getInstance();
+                calendario2 = Calendar.getInstance();
                 añoH = calendario2.get(Calendar.YEAR);
                 mesH = calendario2.get(Calendar.MONTH)+1;
                 diaH = calendario2.get(Calendar.DAY_OF_MONTH);
+                calendario2.set(Calendar.HOUR_OF_DAY, 18);
+                calendario2.set(Calendar.MINUTE, 0);
                 mostrarFechaHasta();
 
-                System.out.println("esta pasando por aca-------------------->2");
                 selectorHoraDesde = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         horaD = hourOfDay;
                         minD  = minute;
+                        calendario.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendario.set(Calendar.MINUTE, minute);
                         mostrarHoraDesde();
+                        System.out.println("fecha desde con hora    /  " + calendario.getTime());
+
                     }
                 };
                 selectorHoraHasta = new TimePickerDialog.OnTimeSetListener() {
@@ -168,7 +188,13 @@ public class misTurnosMedico extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         horaH = hourOfDay;
                         minH  = minute;
+                        calendario2.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendario2.set(Calendar.MINUTE, minute);
                         mostrarHoraHasta();
+                        System.out.println("fecha hasta con hora   /  " + calendario2.getTime());
+
+
+
                     }
                 };
 
@@ -179,6 +205,8 @@ public class misTurnosMedico extends AppCompatActivity {
                         mesD = month;
                         diaD = dayOfMonth;
                         mostrarFechaDesde();
+                        calendario.set(añoD, mesD, diaD);
+                        System.out.println("fecha desde    /  " + calendario.getTime());
                     }
                 };
                 selectorFechaHasta = new DatePickerDialog.OnDateSetListener() {
@@ -188,6 +216,9 @@ public class misTurnosMedico extends AppCompatActivity {
                         mesH = month;
                         diaH = dayOfMonth;
                         mostrarFechaHasta();
+                        //calendarHasta
+                        calendario2.set(añoH , mesH, diaH);
+                        System.out.println("fecha hasta    /  " + calendario2.getTime());
                     }
                 };
 
@@ -217,6 +248,30 @@ public class misTurnosMedico extends AppCompatActivity {
             public void onFailure(Call<List<Turno>> call, Throwable t) {
                 System.out.printf("ERROR: %s", t.getMessage());
                 Toast.makeText(misTurnosMedico.this, "get turnos failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void filtrarTurnosMedico(Integer userId, Date fechadesde, Date fechahasta, String especialidad){
+        ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
+        Call<List<Turno>> call = service.getTurnosMedico(userId);
+        call.enqueue(new Callback<List<Turno>>() {
+            @Override
+            public void onResponse(Call<List<Turno>> call, Response<List<Turno>> response) {
+                if (response.code() == 200) {
+                    System.out.println("getted turnos ok");
+                    List<Turno> turnos = response.body();
+                    AdapterFiltroMedico adapterfiltroMedico = new AdapterFiltroMedico(contexto, R.layout.cuadro_misturnos_medico,  (ArrayList<Turno>) turnos, fechadesde, fechahasta, especialidad);
+                    listView.setAdapter(adapterfiltroMedico);
+                } else if (response.code() == 500) {
+                    System.out.println("ERROR: code 500 - get specialties failed");
+                    Toast.makeText(misTurnosMedico.this, "get filter failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Turno>> call, Throwable t) {
+                System.out.printf("ERROR: %s", t.getMessage());
+                Toast.makeText(misTurnosMedico.this, "get filter failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -262,9 +317,9 @@ public class misTurnosMedico extends AppCompatActivity {
         } else if (id == 1) {
             return new DatePickerDialog(this, selectorFechaHasta, añoH, mesH, diaH);
         } else if (id == 2) {
-            return new TimePickerDialog(this, selectorHoraDesde, horaD, minD, true);
+            return new TimePickerDialog(this, selectorHoraDesde, horaD, minD, false);
         }else if (id == 3){
-            return new TimePickerDialog(this, selectorHoraHasta, horaH, minH,true);
+            return new TimePickerDialog(this, selectorHoraHasta, horaH, minH,false);
         } else {
             return null;
         }

@@ -228,7 +228,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#F1F9FF"
-            android:text="aceptar"
+            android:text="ATENDER"
             android:textColor="#5282A8" />
     </RadioGroup>
 
