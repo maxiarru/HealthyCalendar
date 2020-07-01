@@ -77,8 +77,6 @@ public class CalendarioActivity extends AppCompatActivity {
                         month = "0" + month;
                     }
                     String startDate = String.format("%s-%s-01T00:00:00Z", String.valueOf(localDate.getYear()), month);
-                    //localDate.plusMonths(1);
-                    //String finishDate = "%s-%s-01T00:00:00Z".format(String.valueOf(localDate.getMonthValue()), localDate.getYear());
                     idEspecialidad = (Integer) item.tag;
                     buscarTurnos(idEspecialidad, startDate);
                 }
@@ -88,22 +86,11 @@ public class CalendarioActivity extends AppCompatActivity {
             }
         });
         botonSalir = (Button) findViewById(R.id.btnSalir);
-
         botonSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(recuerdame.equalsIgnoreCase("recordar")) {
                     Intent volver = new Intent(CalendarioActivity.this, MainActivity.class);
-                    volver.putExtra("ELUSUARIO", elUsuario);
-                    volver.putExtra("ELPASS",elPass);
-                    volver.putExtra("RECUERDAME", recuerdame);
                     startActivity(volver);
-                }else{
-                    Intent volver = new Intent(CalendarioActivity.this, MainActivity.class);
-                    volver.putExtra("RECUERDAME", recuerdame);
-                    startActivity(volver);
-                }
             }
         });
         botonTurnos = (Button) findViewById(R.id.btnMisTurnos);
@@ -123,6 +110,7 @@ public class CalendarioActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Intent agendar = new Intent(CalendarioActivity.this, agendarTurnoActivity.class);
+
                 List<Turno> turnosPorDia = filtrarTurnosPorDia(year, month, dayOfMonth);
                 agendar.putExtra("USER_ID", userId);
                 agendar.putExtra("TURNOS_DISPONIBLES", (Serializable) turnosPorDia);

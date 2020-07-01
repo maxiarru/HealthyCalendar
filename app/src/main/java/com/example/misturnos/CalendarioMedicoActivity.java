@@ -88,17 +88,17 @@ public class CalendarioMedicoActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if(recuerdame.equalsIgnoreCase("recordar")) {
+      //          if(recuerdame.equalsIgnoreCase("recordar")) {
+      //              Intent volver = new Intent(CalendarioMedicoActivity.this, MainActivity.class);
+      //              volver.putExtra("ELUSUARIO", elUsuario);
+      //              volver.putExtra("ELPASS",elPass);
+      //              volver.putExtra("RECUERDAME", recuerdame);
+      //              startActivity(volver);
+    //            }else{
                     Intent volver = new Intent(CalendarioMedicoActivity.this, MainActivity.class);
-                    volver.putExtra("ELUSUARIO", elUsuario);
-                    volver.putExtra("ELPASS",elPass);
-                    volver.putExtra("RECUERDAME", recuerdame);
+     //               volver.putExtra("RECUERDAME", recuerdame);
                     startActivity(volver);
-                }else{
-                    Intent volver = new Intent(CalendarioMedicoActivity.this, MainActivity.class);
-                    volver.putExtra("RECUERDAME", recuerdame);
-                    startActivity(volver);
-                }
+  //              }
             }
         });
 

@@ -29,6 +29,8 @@
             android:clickable="true"
             android:onClick="CalendarClickPaciente"
             ></CalendarView>
+
+
     </LinearLayout>
     <RadioGroup
         android:layout_width="410dp"
