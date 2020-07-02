@@ -2,6 +2,7 @@ package com.example.misturnos;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -26,8 +27,15 @@ import com.example.misturnos.client.api.ApiService;
 import com.example.misturnos.client.api.RetrofitClientInstance;
 import com.example.misturnos.models.Especialidad;
 import com.example.misturnos.models.Turno;
+import com.example.misturnos.models.Horario;
+import com.example.misturnos.models.HorarioItem;
 import com.example.misturnos.utils.ComboList;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +53,7 @@ public class plusActivity extends AppCompatActivity {
     Context contexto;
     int añoD, mesD, diaD, horaD, minD;
     int añoH, mesH, diaH, horaH, minH;
-    EditText campoFechaDesde , campoFechaHasta , campoHoraDesde, campoHoraHasta;
+    EditText año , mes , campoHoraDesde, campoHoraHasta;
     static final int tipoDialogoD = 0;
     static final int tipoDialogoH = 1;
     static final int tipodialogohorD = 2;
@@ -69,7 +77,6 @@ public class plusActivity extends AppCompatActivity {
         Integer userId = bundle.getInt("USER_ID");
         String tipoUsuario = bundle.getString("tipo_USUARIO");
 
-
         contexto = this;
 
         spinner = findViewById(R.id.spinnerProfesion2);
@@ -84,6 +91,7 @@ public class plusActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ComboList item = (ComboList) parent.getItemAtPosition(position);
                 especialidad = item.string;
+                idEspecialidad = (Integer) item.tag;
             }
 
             @Override
@@ -101,14 +109,84 @@ public class plusActivity extends AppCompatActivity {
         Button jueves = (Button) findViewById(R.id.btnJueves);
         Button viernes = (Button) findViewById(R.id.btnViernes);
         Button sabado = (Button) findViewById(R.id.btnSabado);
+        campoHoraDesde = (EditText) findViewById(R.id.texhoraDesde);
+        //  Calendar calendarH = Calendar.getInstance();
+        horaD = 8;
+        minD = 00;
+        mostrarHoraDesde();
 
+        campoHoraHasta = (EditText)findViewById(R.id.texhoraHasta);
+        //   Calendar calendarH2 = Calendar.getInstance();
+        horaH = 18;
+        minH = 0;
+        mostrarHoraHasta();
+
+        mes = (EditText)findViewById(R.id.texMes);
+        año = (EditText)findViewById(R.id.texAño);
+        año.setText("2020");
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent ok = new Intent(plusActivity.this, CalendarioMedicoActivity.class);
-                ok.putExtra("USER_ID", userId);
-                ok.putExtra("tipo_USUARIO", tipoUsuario);
-                startActivity(ok);
+                Integer añoValue = Integer.parseInt(año.getText().toString());
+                Integer mesValue = Integer.parseInt(mes.getText().toString());
+                Integer idMedico = userId;
+
+                List<HorarioItem> items = new ArrayList<>();
+                String horaInicio = campoHoraDesde.getText().toString();
+                String horaFin = campoHoraHasta.getText().toString();
+                if (lunes.isActivated()) {
+                    items.add(new HorarioItem(2, horaInicio, horaFin));
+                }
+                if (martes.isActivated()) {
+                    items.add(new HorarioItem(3, horaInicio, horaFin));
+                }
+                if (miercoles.isActivated()) {
+                    items.add(new HorarioItem(4, horaInicio, horaFin));
+                }
+                if (jueves.isActivated()) {
+                    items.add(new HorarioItem(5, horaInicio, horaFin));
+                }
+                if (viernes.isActivated()) {
+                    items.add(new HorarioItem(6, horaInicio, horaFin));
+                }
+                if (sabado.isActivated()) {
+                    items.add(new HorarioItem(7, horaInicio, horaFin));
+                }
+                Horario horario = new Horario(añoValue, mesValue, items);
+
+                ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
+                System.out.println("set horarios");
+                Call<Void> call = service.SetHorariosMedico(idMedico, idEspecialidad, horario);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.code() == 200) {
+                            System.out.println("schedule setted  ok");
+                            Intent ok = new Intent(plusActivity.this, CalendarioMedicoActivity.class);
+                            ok.putExtra("USER_ID", userId);
+                            ok.putExtra("tipo_USUARIO", tipoUsuario);
+                            startActivity(ok);
+                        }
+                        else if (response.code() == 500) {
+                            System.out.println("ERROR: code 500 - request appointment failed");
+                            try {
+                                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                String errorMessage = jObjError.getString("description");
+                                Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        System.out.printf("ERROR: %s", t.getMessage());
+                        Toast.makeText(v.getContext(), "agendar turno no disponible", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         cancelar.setOnClickListener(new View.OnClickListener() {
@@ -182,36 +260,6 @@ public class plusActivity extends AppCompatActivity {
             }
         });
 
-        campoHoraDesde = (EditText) findViewById(R.id.texhoraDesde);
-        //  Calendar calendarH = Calendar.getInstance();
-        horaD = 8;
-        minD = 00;
-        mostrarHoraDesde();
-
-        campoHoraHasta = (EditText)findViewById(R.id.texhoraHasta);
-        //   Calendar calendarH2 = Calendar.getInstance();
-        horaH = 18;
-        minH = 0;
-        mostrarHoraHasta();
-
-        campoFechaDesde = (EditText)findViewById(R.id.texDesde);
-        calendario = Calendar.getInstance();
-        añoD = calendario.get(Calendar.YEAR);
-        mesD = calendario.get(Calendar.MONTH)+1;
-        diaD = calendario.get(Calendar.DAY_OF_MONTH);
-        calendario.set(Calendar.HOUR_OF_DAY, 8);
-        calendario.set(Calendar.MINUTE, 0);
-        mostrarFechaDesde();
-
-        campoFechaHasta = (EditText)findViewById(R.id.texHasta);
-        calendario2 = Calendar.getInstance();
-        añoH = calendario2.get(Calendar.YEAR);
-        mesH = calendario2.get(Calendar.MONTH)+1;
-        diaH = calendario2.get(Calendar.DAY_OF_MONTH);
-        calendario2.set(Calendar.HOUR_OF_DAY, 18);
-        calendario2.set(Calendar.MINUTE, 0);
-        mostrarFechaHasta();
-
         selectorHoraDesde = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -233,43 +281,14 @@ public class plusActivity extends AppCompatActivity {
                 calendario2.set(Calendar.MINUTE, minute);
                 mostrarHoraHasta();
                 System.out.println("fecha hasta con hora   /  " + calendario2.getTime());
-
-
-
             }
         };
-
-        selectorFechaDesde = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                añoD = year;
-                mesD = month;
-                diaD = dayOfMonth;
-                mostrarFechaDesde();
-                calendario.set(añoD, mesD, diaD);
-                System.out.println("fecha desde    /  " + calendario.getTime());
-            }
-        };
-        selectorFechaHasta = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                añoH = year;
-                mesH = month;
-                diaH = dayOfMonth;
-                mostrarFechaHasta();
-                //calendarHasta
-                calendario2.set(añoH , mesH, diaH);
-                System.out.println("fecha hasta    /  " + calendario2.getTime());
-            }
-        };
-
     }
 
 
     private List<ComboList> llenarEspecialidadesMedico(){
         Bundle bundle = this.getIntent().getExtras();
         Integer userId = bundle.getInt("USER_ID");
-
         ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
         System.out.println("getting specialties");
         Call<List<Especialidad>> call = service.getEspecialidadesByProfesional(userId);
@@ -314,26 +333,11 @@ public class plusActivity extends AppCompatActivity {
             return null;
         }
     }
-    public void verCalendarioDesde(View control){
-        showDialog(tipoDialogoD);
-    }
-
-    public void verCalendarioHasta(View control){
-        showDialog(tipoDialogoH);
-    }
     public void verHoraDesde(View control){
         showDialog(tipodialogohorD);
     }
     public void verHoraHasta(View control){
         showDialog(tipoDialogohorH);
-    }
-
-
-    public void mostrarFechaDesde(){
-        campoFechaDesde.setText(diaD + "/" + mesD + "/" + añoD);
-    }
-    public void mostrarFechaHasta(){
-        campoFechaHasta.setText(diaH + "/" + mesH + "/" + añoH);
     }
     public void mostrarHoraDesde(){
         campoHoraDesde.setText(horaD + ":" + minD );

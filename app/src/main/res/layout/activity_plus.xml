@@ -183,29 +183,29 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Desde"
+                android:text="Año"
                 android:textColor="@color/colorAccent"/>
 
             <EditText
-                android:id="@+id/texDesde"
+                android:id="@+id/texAño"
                 android:layout_width="100dp"
                 android:layout_height="42dp"
                 android:ems="10"
-                android:inputType="date"
-                android:onClick="verCalendarioDesde" />
+                android:maxLength="7"
+                android:inputType="number" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hasta"
+                android:text="Mes"
                 android:textColor="@color/colorAccent"/>
 
             <EditText
-                android:id="@+id/texHasta"
+                android:id="@+id/texMes"
                 android:layout_width="100dp"
                 android:layout_height="42dp"
                 android:ems="10"
-                android:inputType="date"
-                android:onClick="verCalendarioHasta" />
+                android:maxLength="2"
+                android:inputType="number" />
         </LinearLayout>
 
     </LinearLayout>

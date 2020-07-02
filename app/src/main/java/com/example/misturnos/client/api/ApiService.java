@@ -1,6 +1,7 @@
 package com.example.misturnos.client.api;
 import com.example.misturnos.models.Credenciales;
 import com.example.misturnos.models.Especialidad;
+import com.example.misturnos.models.Horario;
 import com.example.misturnos.models.Paciente;
 import com.example.misturnos.models.Turno;
 import com.example.misturnos.models.Usuario;
@@ -52,4 +53,7 @@ public interface ApiService {
 
     @PUT("/v1/patients/{id}/appointments/{idAppointment}/request")
     Call<Void> putAgendarTurno(@Path("id") Integer idPaciente, @Path("idAppointment") Integer idTurno);
+
+    @POST("/v1/professionals/{id}/specialties/{idSpecialty}/schedule")
+    Call<Void> SetHorariosMedico(@Path("id") Integer idMedico, @Path("idSpecialty") Integer idSpecialty, @Body Horario horario);
 }
