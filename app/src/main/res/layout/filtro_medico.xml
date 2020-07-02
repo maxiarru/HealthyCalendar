@@ -41,66 +41,39 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/user">
+        </ImageView>
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Estado"
+            android:textColor="@color/colorAccent"
+            android:gravity="center_vertical">
+        </TextView>
+    </LinearLayout>
+    <Spinner
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/spinnerStatus"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:textAlignment="center"
+        ></Spinner>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_gravity="center">
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/hora">
-            </ImageView>
-            <TextView
-                android:layout_marginLeft="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Rango Horario"
-                android:textColor="@color/colorAccent"
-                android:gravity="center_vertical">
-            </TextView>
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Desde"
-                android:textColor="@color/colorAccent"/>
-
-            <EditText
-                android:id="@+id/texhoraDesde"
-                android:layout_width="100dp"
-                android:layout_height="42dp"
-                android:ems="10"
-                android:inputType="time"
-                android:onClick="verHoraDesde" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hasta"
-                android:textColor="@color/colorAccent"/>
-
-            <EditText
-                android:id="@+id/texhoraHasta"
-                android:layout_width="100dp"
-                android:layout_height="42dp"
-                android:ems="10"
-                android:inputType="time"
-                android:onClick="verHoraHasta" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

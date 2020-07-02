@@ -66,7 +66,9 @@ public class CalendarioMedicoActivity extends AppCompatActivity {
         recuerdame  = bundle.getString("RECUERDAME");
         ctx = this;
         modoPaciente = (Switch) findViewById(R.id.swmodoPaciente);
-        if (tipoUsuario.toString().equals("paciente")){
+        if (tipoUsuario == null) {
+            modoPaciente.setChecked(false);
+        } else if (tipoUsuario.toString().equals("paciente")){
             modoPaciente.setChecked(true);
 
         }else {

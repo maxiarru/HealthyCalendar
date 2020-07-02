@@ -29,7 +29,7 @@ public interface ApiService {
     Call<Paciente> getProfesionalById(@Path("id") Integer idProfesional);
 
     @GET("/v1/professionals/{id}/appointments")
-    Call<List<Turno>> getTurnosMedico(@Path("id") Integer idProfesional);
+    Call<List<Turno>> getTurnosMedico(@Path("id") Integer idProfesional, @Query("startDate") String startDate, @Query("finishDate") String finishDate, @Query("idspecialty") Integer idSpecialty, @Query("status") String status);
 
     @PUT("/v1/professionals/{id}/appointments/{idAppointment}/cancel")
     Call<Void> putCancelarTurnoMedico(@Path("id") Integer idMedico, @Path("idAppointment") Integer idTurno);
@@ -40,7 +40,6 @@ public interface ApiService {
     @GET("/v1/appointments")
         //Call<List<Turno>> getTurnosByEspecialidad(@Query("idspecialty") Integer idSpecialty, @Query("startDate") String startDate);
     Call<List<Turno>> getTurnosByEspecialidad(@Query("idspecialty") Integer idSpecialty);
-
 
     @GET("/v1/patients/{id}/appointments")
     Call<List<Turno>> getTurnos(@Path("id") Integer idPaciente);

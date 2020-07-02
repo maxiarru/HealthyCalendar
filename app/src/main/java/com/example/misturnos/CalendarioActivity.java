@@ -178,6 +178,8 @@ public class CalendarioActivity extends AppCompatActivity {
         ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
         //arreglar api para que soporte mas de un filtro
         //Call<List<Turno>> call = service.getTurnosByEspecialidad(idEspecialidad, mes);
+        System.out.println("HOLAA");
+        System.out.println(idEspecialidad);
         Call<List<Turno>> call = service.getTurnosByEspecialidad(idEspecialidad);
         call.enqueue(new Callback<List<Turno>>() {
             @Override
@@ -186,8 +188,6 @@ public class CalendarioActivity extends AppCompatActivity {
                     turnos = response.body();
                     if (turnos.isEmpty()) {
                         Toast.makeText(CalendarioActivity.this, "no hay turnos disponbiles", Toast.LENGTH_SHORT).show();
-                    } else {
-                        System.out.println(turnos);
                     }
                 } else if (response.code() == 500) {
                     System.out.println("ERROR: search appointments failed");

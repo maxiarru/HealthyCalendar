@@ -35,6 +35,7 @@ public class AdapterFiltroMedico extends BaseAdapter {
     private int layout;
     private List<Turno> turnos;
     private Integer idMedico;
+    private String tipoUsuario;
     private Date fechaDesde, fechaHasta;
     private String especialidad , especialidadCompleta;
 
@@ -128,6 +129,7 @@ public class AdapterFiltroMedico extends BaseAdapter {
                     ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
                     System.out.println("request appointment");
                     idMedico = ((Activity) context).getIntent().getExtras().getInt("USER_ID");
+                    tipoUsuario = ((Activity) context).getIntent().getExtras().getString("tipo_USUARIO");
                     System.out.println("**** tengo el id? ******" + idMedico + " / " + turnoActual.getId());
                     Call<Void> call = service.putCancelarTurnoMedico(idMedico, turnoActual.getId());
                     call.enqueue(new Callback<Void>() {
@@ -137,6 +139,8 @@ public class AdapterFiltroMedico extends BaseAdapter {
                                 System.out.println("cancel appointment ok");
                                 Intent volver = new Intent(context, CalendarioMedicoActivity.class);
                                 volver.putExtra("USER_ID", idMedico);
+                                volver.putExtra("tipo_USUARIO", tipoUsuario);
+                                Toast.makeText(v.getContext(), "turno cancelado!", Toast.LENGTH_SHORT).show();
                                 context.startActivity(volver);
                             } else if (response.code() == 500) {
                                 System.out.println("ERROR: code 500 - request appointment failed");
@@ -212,6 +216,7 @@ public class AdapterFiltroMedico extends BaseAdapter {
                 ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
                 System.out.println("request appointment");
                 idMedico = ((Activity) context).getIntent().getExtras().getInt("USER_ID");
+                tipoUsuario = ((Activity) context).getIntent().getExtras().getString("tipo_USUARIO");
                 System.out.println("**** tengo el id? ******" + idMedico + " / " + turnoActual.getId());
                 Call<Void> call = service.putCancelarTurnoMedico(idMedico, turnoActual.getId());
                 call.enqueue(new Callback<Void>() {
@@ -221,6 +226,8 @@ public class AdapterFiltroMedico extends BaseAdapter {
                             System.out.println("cancel appointment ok");
                             Intent volver = new Intent(context, CalendarioMedicoActivity.class);
                             volver.putExtra("USER_ID", idMedico);
+                            volver.putExtra("tipo_USUARIO", tipoUsuario);
+                            Toast.makeText(v.getContext(), "turno cancelado!", Toast.LENGTH_SHORT).show();
                             context.startActivity(volver);
                         } else if (response.code() == 500) {
                             System.out.println("ERROR: code 500 - request appointment failed");
@@ -238,7 +245,6 @@ public class AdapterFiltroMedico extends BaseAdapter {
                 });
             }
         });
-        Toast.makeText(v.getContext(), "filtro incorrecto", Toast.LENGTH_SHORT).show();
         return v;
     }
 }

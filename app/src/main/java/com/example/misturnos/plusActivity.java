@@ -162,6 +162,7 @@ public class plusActivity extends AppCompatActivity {
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.code() == 200) {
                             System.out.println("schedule setted  ok");
+                            Toast.makeText(v.getContext(), "turnos creados!", Toast.LENGTH_SHORT).show();
                             Intent ok = new Intent(plusActivity.this, CalendarioMedicoActivity.class);
                             ok.putExtra("USER_ID", userId);
                             ok.putExtra("tipo_USUARIO", tipoUsuario);
