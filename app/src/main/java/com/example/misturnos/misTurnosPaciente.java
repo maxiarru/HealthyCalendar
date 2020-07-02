@@ -42,17 +42,26 @@ public class misTurnosPaciente extends AppCompatActivity {
         setContentView(R.layout.activity_mi_turnos_paciente);
         Bundle bundle = this.getIntent().getExtras();
         Integer userId = bundle.getInt("USER_ID");
+        String tipoUsuario = bundle.getString( "tipo_USUARIO");
+
 
         botonAtras = (ImageButton) findViewById(R.id.btnAtras);
         botonAtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent atras = new Intent(misTurnosPaciente.this, CalendarioActivity.class);
-                atras.putExtra("USER_ID", userId);
-                startActivity(atras);
+                if (tipoUsuario == null) {
+                    Intent atras = new Intent(misTurnosPaciente.this, CalendarioActivity.class);
+                    atras.putExtra("USER_ID", userId);
+                    startActivity(atras);
+                }else {
+                    Intent atras = new Intent(misTurnosPaciente.this, CalendarioMedicoActivity.class);
+                    atras.putExtra("USER_ID", userId);
+                    atras.putExtra("tipo_USUARIO", tipoUsuario);
+                    System.out.println(tipoUsuario + " volviendo medico en modo paciente");
+                    startActivity(atras);
+                }
             }
-        });
-        /*botonOk.setOnClickListener(new View.OnClickListener() {
+        });        /*botonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".AdapterMisTurnosMedico"
+
+    >
+
+    <LinearLayout
+        android:id="@+id/cuadroTurnoPaciente"
+        android:layout_width="350dp"
+        android:layout_height="85dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:alwaysDrawnWithCache="false"
+        android:background="@drawable/dialog_container2"
+        android:duplicateParentState="true"
+        android:orientation="vertical"
+        android:scrollbarFadeDuration="250"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="30dp"
+            android:background="@drawable/dialog_container"
+
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5px"
+                android:layout_marginLeft="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N° Turno: "
+                    android:textColor="@color/colorPrimary"
+                    ></TextView>
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:text=""
+                    android:id="@+id/txtnroTurno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginLeft="10dp"
+                    android:text=" / "
+                    android:id="@+id/txtbarra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:id="@+id/txtpaciente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="75dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:textColor="@color/negro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtFecha"
+                    ></TextView>
+
+                <TextView
+                    android:textColor="@color/negro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/txtHorario"
+                    ></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="2dp"
+                >
+                <TextView
+                    android:textColor="@color/negro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estado : "></TextView>
+
+                <TextView
+                    android:textColor="@color/negro"
+                    android:text=""
+                    android:id="@+id/txtestado"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"></TextView>
+
+                <Button
+                    android:id="@+id/cbCancelar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="10dp"
+                    android:checked="false"
+                    android:scrollX="300dp"
+                    android:text="Cancelar"
+                    android:textSize="11dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/colorPrimary"
+                    android:background="@drawable/buttom"
+                    android:visibility="visible"></Button>
+            </LinearLayout>
+        </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+

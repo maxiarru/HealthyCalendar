@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".plusActivity">
+
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        >
+
+        <Button
+            android:id="@+id/btnLunes"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/fondobot"
+            android:text="Lun"/>
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:text="mar"
+            android:background="@drawable/fondobot"
+            android:id="@+id/btnMartes"
+            />
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:text="mie"
+            android:background="@drawable/fondobot"
+            android:id="@+id/btnMiercoles"
+            />
+        <Button
+            android:id="@+id/btnJueves"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:text="Jue"
+            android:background="@drawable/fondobot"
+            />
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:text="Vie"
+            android:background="@drawable/fondobot"
+            android:id="@+id/btnViernes"
+            />
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:text="Sab"
+            android:background="@drawable/fondobot"
+            android:id="@+id/btnSabado"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/user">
+        </ImageView>
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Profesion"
+            android:textColor="@color/colorAccent"
+            android:gravity="center_vertical">
+        </TextView>
+    </LinearLayout>
+    <Spinner
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/spinnerProfesion2"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:textAlignment="center"
+        ></Spinner>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/hora">
+            </ImageView>
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Rango Horario"
+                android:textColor="@color/colorAccent"
+                android:gravity="center_vertical">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Desde"
+                android:textColor="@color/colorAccent"/>
+
+            <EditText
+                android:id="@+id/texhoraDesde"
+                android:layout_width="100dp"
+                android:layout_height="42dp"
+                android:ems="10"
+                android:inputType="time"
+                android:onClick="verHoraDesde" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hasta"
+                android:textColor="@color/colorAccent"/>
+
+            <EditText
+                android:id="@+id/texhoraHasta"
+                android:layout_width="100dp"
+                android:layout_height="42dp"
+                android:ems="10"
+                android:inputType="time"
+                android:onClick="verHoraHasta" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/date">
+            </ImageView>
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Fechas"
+                android:textColor="@color/colorAccent"
+                android:gravity="center_vertical">
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Desde"
+                android:textColor="@color/colorAccent"/>
+
+            <EditText
+                android:id="@+id/texDesde"
+                android:layout_width="100dp"
+                android:layout_height="42dp"
+                android:ems="10"
+                android:inputType="date"
+                android:onClick="verCalendarioDesde" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hasta"
+                android:textColor="@color/colorAccent"/>
+
+            <EditText
+                android:id="@+id/texHasta"
+                android:layout_width="100dp"
+                android:layout_height="42dp"
+                android:ems="10"
+                android:inputType="date"
+                android:onClick="verCalendarioHasta" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <RadioGroup
+        android:layout_width="410dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom"        >
+        <Button
+            android:id="@+id/btnXfiltro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#F1F9FF"
+            android:text="cancelar"
+            android:textColor="#5282A8" />
+        <Button
+            android:id="@+id/btnOkfiltro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#F1F9FF"
+            android:text="ATENDER"
+            android:textColor="#5282A8" />
+    </RadioGroup>
+
+
+</LinearLayout>
