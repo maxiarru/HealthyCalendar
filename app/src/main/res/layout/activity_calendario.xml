@@ -16,19 +16,20 @@
         android:layout_marginLeft="55dp"
         android:textAlignment="center"
         ></Spinner>
+
     <LinearLayout
         android:layout_width="410dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         >
 
-        <CalendarView
+        <sun.bob.mcalendarview.MCalendarView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/calendarViewPaciente"
             android:clickable="true"
             android:onClick="CalendarClickPaciente"
-            ></CalendarView>
+            />
 
 
     </LinearLayout>
