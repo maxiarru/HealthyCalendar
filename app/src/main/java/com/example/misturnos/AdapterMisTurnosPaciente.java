@@ -138,7 +138,7 @@ public class AdapterMisTurnosPaciente extends BaseAdapter {
                             }
                             else if (response.code() == 500) {
                                 System.out.println("ERROR: code 500 - request appointment failed");
-                                Toast.makeText(v.getContext(), "solo pueda confirmar un turno dentro de las previas 24hs", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(v.getContext(), "solo pueda confirmar un turno dentro de las previas 12hs", Toast.LENGTH_SHORT).show();
                             }
                         }
 

@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                                 Intent pacienteAct = new Intent(MainActivity.this, CalendarioActivity.class);
                                 pacienteAct.putExtra("USER_ID", user.getId());
                                 startActivity(pacienteAct);
+                                savePreferencias(elUser,elPass);
                             }
                         } else if (response.code() == 500) {
                             System.out.println("ERROR: authentication failed");
