@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,14 +16,15 @@ import androidx.annotation.RequiresApi;
 
 import com.example.misturnos.client.api.ApiService;
 import com.example.misturnos.client.api.RetrofitClientInstance;
-import com.example.misturnos.models.Especialidad;
 import com.example.misturnos.models.Turno;
-import com.example.misturnos.utils.ComboList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -118,7 +117,15 @@ public class MyAdapterAgendarTurnoPaciente extends BaseAdapter {
                             }
                             else if (response.code() == 500) {
                                 System.out.println("ERROR: code 500 - request appointment failed");
-                            Toast.makeText(v.getContext(), "fallo agendar turno", Toast.LENGTH_SHORT).show();
+                                try {
+                                    JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                    String errorMessage = jObjError.getString("description");
+                                    Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
 

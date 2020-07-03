@@ -12,7 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
+//import android.widget.CalendarView;
+import sun.bob.mcalendarview.MCalendarView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -33,6 +34,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sun.bob.mcalendarview.listeners.OnDateClickListener;
+import sun.bob.mcalendarview.listeners.OnMonthChangeListener;
+import sun.bob.mcalendarview.vo.DateData;
+import sun.bob.mcalendarview.vo.MarkedDates;
 
 import com.example.misturnos.models.Turno;
 import com.example.misturnos.utils.ComboList;
@@ -43,14 +48,24 @@ public class CalendarioActivity extends AppCompatActivity {
     private Button botonSalir, botonTurnos;
     private Integer idEspecialidad;
     private List<Turno> turnos;
-    CalendarView calendarioPaciente;
+    MCalendarView calendarioPaciente;
+    private String elPass, elUsuario , recuerdame;
+    private Integer calendarYear, calendarMonth;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendario);
         Bundle bundle = this.getIntent().getExtras();
         Integer userId = bundle.getInt("USER_ID");
-
+        elPass      = bundle.getString("ELPASS");
+        elUsuario   = bundle.getString("ELUSUARIO");
+        recuerdame  = bundle.getString("RECUERDAME");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        calendarYear = localDate.getYear();
+        calendarMonth = localDate.getMonthValue();
         spinner = findViewById(R.id.spinnerProfesion);
         List<ComboList> profesiones = llenarEspecialidades();
         String placeHolder = "Elegir Especialidad:";
@@ -73,10 +88,26 @@ public class CalendarioActivity extends AppCompatActivity {
                         month = "0" + month;
                     }
                     String startDate = String.format("%s-%s-01T00:00:00Z", String.valueOf(localDate.getYear()), month);
-                    //localDate.plusMonths(1);
-                    //String finishDate = "%s-%s-01T00:00:00Z".format(String.valueOf(localDate.getMonthValue()), localDate.getYear());
                     idEspecialidad = (Integer) item.tag;
                     buscarTurnos(idEspecialidad, startDate);
+                    System.out.println("MES CALENDARIO AHORA?");
+                    System.out.println(calendarMonth);
+                    System.out.println(calendarYear);
+                    List<Integer> turnosPorDia = filtrarDiasConTurnoMes(calendarYear, calendarMonth);
+                    if (turnosPorDia.isEmpty()) {
+                        System.out.println("ES VACIO");
+                        MarkedDates markedDates = calendarioPaciente.getMarkedDates();
+                        markedDates.removeAdd();
+                        for (DateData d : markedDates.getAll()){
+                            calendarioPaciente.unMarkDate(d.getYear(), d.getMonth(), d.getDay());
+                        }
+                        Toast.makeText(CalendarioActivity.this, "no hay turnos disponibles en este mes", Toast.LENGTH_SHORT).show();
+                    }else{
+                        System.out.println("O NO ES VACIO PAPER");
+                        for (Integer d : turnosPorDia){
+                            calendarioPaciente.markDate(calendarYear, calendarMonth, d);
+                        }
+                    }
                 }
             }
             @Override
@@ -84,12 +115,11 @@ public class CalendarioActivity extends AppCompatActivity {
             }
         });
         botonSalir = (Button) findViewById(R.id.btnSalir);
-
         botonSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent volver = new Intent(CalendarioActivity.this, MainActivity.class);
-                startActivity(volver);
+                    Intent volver = new Intent(CalendarioActivity.this, MainActivity.class);
+                    startActivity(volver);
             }
         });
         botonTurnos = (Button) findViewById(R.id.btnMisTurnos);
@@ -102,14 +132,38 @@ public class CalendarioActivity extends AppCompatActivity {
             }
         });
 
-        calendarioPaciente = (CalendarView) findViewById(R.id.calendarViewPaciente);
+        calendarioPaciente = (MCalendarView) findViewById(R.id.calendarViewPaciente);
 
-        calendarioPaciente.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        calendarioPaciente.setOnMonthChangeListener(new OnMonthChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+            public void onMonthChange(int year, int month) {
+                calendarYear = year;
+                calendarMonth = month;
+                System.out.println("MES CALENDARIO AHORA?");
+                System.out.println(calendarMonth);
+                System.out.println(calendarYear);
+                List<Integer> turnosPorDia = filtrarDiasConTurnoMes(year, month);
+                if (turnosPorDia.isEmpty()) {
+                    MarkedDates markedDates = calendarioPaciente.getMarkedDates();
+                    for (DateData d : markedDates.getAll()){
+                        calendarioPaciente.unMarkDate(d.getYear(), d.getMonth(), d.getDay());
+                    }
+                    Toast.makeText(CalendarioActivity.this, "no hay turnos disponibles en este mes", Toast.LENGTH_SHORT).show();
+                }else{
+                    for (Integer d : turnosPorDia){
+                        calendarioPaciente.markDate(year, month, d);
+                    }
+                }
+            }
+        });
+
+        calendarioPaciente.setOnDateClickListener(new OnDateClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onDateClick(View view, DateData date) {
                 Intent agendar = new Intent(CalendarioActivity.this, agendarTurnoActivity.class);
-                List<Turno> turnosPorDia = filtrarTurnosPorDia(year, month, dayOfMonth);
+                List<Turno> turnosPorDia = filtrarTurnosPorDia(date.getYear(), date.getMonth(), date.getDay());
                 agendar.putExtra("USER_ID", userId);
                 agendar.putExtra("TURNOS_DISPONIBLES", (Serializable) turnosPorDia);
                 if (turnosPorDia.isEmpty()) {
@@ -119,7 +173,6 @@ public class CalendarioActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -130,7 +183,7 @@ public class CalendarioActivity extends AppCompatActivity {
         }
         for (Turno t : turnos){
             LocalDate localDate = t.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            Integer turnoMes = localDate.getMonthValue() - 1;
+            Integer turnoMes = localDate.getMonthValue();
             Integer turnoAño = localDate.getYear();
             Integer turnoDia = localDate.getDayOfMonth();
 
@@ -139,6 +192,28 @@ public class CalendarioActivity extends AppCompatActivity {
             }
         }
         return turnosFiltrados;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private List<Integer> filtrarDiasConTurnoMes(Integer year, Integer month){
+        List<Integer> diasConTurno = new ArrayList<>();
+        if (turnos == null) {
+            return diasConTurno;
+        }
+
+        for (Turno t : turnos){
+            LocalDate localDate = t.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            Integer turnoMes = localDate.getMonthValue();
+            Integer turnoAño = localDate.getYear();
+            Integer turnoDia = localDate.getDayOfMonth();
+
+            if ((year.equals(turnoAño)) && (month.equals(turnoMes))){
+                if (!diasConTurno.contains(turnoDia)) {
+                    diasConTurno.add(turnoDia);
+                }
+            }
+        }
+        return diasConTurno;
     }
     private List<ComboList> llenarEspecialidades(){
         ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
@@ -176,6 +251,8 @@ public class CalendarioActivity extends AppCompatActivity {
         ApiService service = RetrofitClientInstance.getRetrofitInstance().create(ApiService.class);
         //arreglar api para que soporte mas de un filtro
         //Call<List<Turno>> call = service.getTurnosByEspecialidad(idEspecialidad, mes);
+        System.out.println("Especialidad");
+        System.out.println(idEspecialidad);
         Call<List<Turno>> call = service.getTurnosByEspecialidad(idEspecialidad);
         call.enqueue(new Callback<List<Turno>>() {
             @Override
@@ -184,7 +261,8 @@ public class CalendarioActivity extends AppCompatActivity {
                     turnos = response.body();
                     if (turnos.isEmpty()) {
                         Toast.makeText(CalendarioActivity.this, "no hay turnos disponbiles", Toast.LENGTH_SHORT).show();
-                    } else {
+                    }else {
+                        System.out.println("Imprimo Turnos");
                         System.out.println(turnos);
                     }
                 } else if (response.code() == 500) {
